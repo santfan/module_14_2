@@ -33,11 +33,26 @@ for i in range(1, 11, 3):
 # Удалим запись с пользователем с id = 6
 cursor.execute("DELETE FROM Users WHERE id = ?", (6,))
 
-# Сделаем запрос к базе и подсчитаем среднне значение баланса
+# Посчитаем общее количество записей в базе
+cursor.execute("SELECT COUNT(*) FROM Users")
+# Сохраним и выведем значение количества записей
+total_users = cursor.fetchone()[0]
+print(f'Обшее количество записей/пользователей в базе: {total_users}')
+
+# Общая сумма баланса пользователей
+cursor.execute("SELECT SUM(balance) FROM Users")
+# Сохраним и выведем значение общей суммы баланса
+all_balance = cursor.fetchone()[0]
+print(f'Общая сумма баланса пользователей: {all_balance}')
+
+# Рассчитаем среднее значение баланса
+print(f'Среднее расчетное значение баланса: {all_balance / total_users}')
+
+# Сделаем запрос к базе среднего значения баланса
 cursor.execute("SELECT AVG(balance) FROM Users")
 
 # выведем полученное среднее значение
-print(cursor.fetchone()[0])
+print(f'Среднее значение баланса из запроса: {cursor.fetchone()[0]}')
 
 connection.commit()
 connection.close()
